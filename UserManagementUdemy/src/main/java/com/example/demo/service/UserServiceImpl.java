@@ -1,13 +1,17 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
+import com.example.demo.exception.EmailAlreadyExistsException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.repository.UserRepository;
 
@@ -20,14 +24,25 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@Override
 	public UserDto addUser(UserDto userDto) {
 		// TODO Auto-generated method stub
 	
-	User user=UserMapper.mapToUser(userDto);
+//	User user=UserMapper.mapToUser(userDto);
+		User user=modelMapper.map(userDto, User.class);
+		
+		
+		Optional<User> optionalUser=userRepository.findByEmail(userDto.getEmail());
+		
+		if(optionalUser.isPresent()) {
+			throw new EmailAlreadyExistsException("Email already exists for user");
+		}
 	User savedUser=userRepository.save(user);
 	
-	UserDto userDto2=UserMapper.mapToUserDto(savedUser);
+	UserDto userDto2=modelMapper.map(savedUser, UserDto.class);
 		return userDto2;
 	}
 
@@ -35,7 +50,8 @@ public class UserServiceImpl implements UserService {
 	public UserDto getUserById(Long id) {
 		// TODO Auto-generated method stub
 		
-		User user=userRepository.findById(id).get();
+		User user=userRepository.findById(id).orElseThrow(
+				()->new ResourceNotFoundException("user", "id", id));
 		UserDto userDto=UserMapper.mapToUserDto(user);
 		return userDto;
 	}
@@ -54,7 +70,10 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		
 		
-		User existingUser=userRepository.findById(user.getId()).get();
+		User existingUser=userRepository.findById(user.getId()).orElseThrow(
+				()->new ResourceNotFoundException("user", "id", user.getId()));
+		
+		
 		existingUser.setFirstName(user.getFirstName());
 		existingUser.setLastName(user.getLastName());
 		existingUser.setEmail(user.getEmail());
