@@ -22,6 +22,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.service.UserService;
 
 import ch.qos.logback.core.spi.ErrorCodes;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -32,7 +33,7 @@ public class UserController {
 	
 	
 	@PostMapping("/post")
-	public ResponseEntity<UserDto> postUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> postUser(@RequestBody @Valid UserDto userDto){
 		UserDto savedUserDto=userService.addUser(userDto);
 		return new ResponseEntity<>(savedUserDto,HttpStatus.CREATED);
 		
@@ -52,25 +53,25 @@ public class UserController {
 	}
 	
 	@PutMapping("/put/{id}")
-	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,@PathVariable Long id ){
+	public ResponseEntity<UserDto> updateUser(@RequestBody @Valid UserDto userDto,@PathVariable Long id ){
 		userDto.setId(id);
 		UserDto dto=userService.updateUser(userDto);
 		return new ResponseEntity<>(dto,HttpStatus.OK);
 	}
 	
-	@ExceptionHandler(ResourceNotFoundException.class)
-	
-	public ResponseEntity<ErrorDetails> handleResourceNoFoundException(ResourceNotFoundException exception,
-			WebRequest webRequest){
-		
-		ErrorDetails errorDetails=new ErrorDetails(
-				LocalDateTime.now(),
-				exception.getMessage(),
-				webRequest.getDescription(false),
-				"USER_NOT_FOUND");
-		
-		return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
-	}
+//	@ExceptionHandler(ResourceNotFoundException.class)
+//	
+//	public ResponseEntity<ErrorDetails> handleResourceNoFoundException(ResourceNotFoundException exception,
+//			WebRequest webRequest){
+//		
+//		ErrorDetails errorDetails=new ErrorDetails(
+//				LocalDateTime.now(),
+//				exception.getMessage(),
+//				webRequest.getDescription(false),
+//				"USER_NOT_FOUND");
+//		
+//		return new ResponseEntity<>(errorDetails,HttpStatus.NOT_FOUND);
+//	}
 	
 	
 
