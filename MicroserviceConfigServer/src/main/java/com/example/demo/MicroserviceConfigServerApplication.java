@@ -2,14 +2,15 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
-@EnableDiscoveryClient
-public class DepartmentServiceApplication {
+@EnableConfigServer
+
+public class MicroserviceConfigServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DepartmentServiceApplication.class, args);
+		SpringApplication.run(MicroserviceConfigServerApplication.class, args);
 	}
 
 }
