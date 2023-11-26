@@ -84,8 +84,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String deleteUser(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		  User existingUser = userRepository.findById(id).orElseThrow(
+	                () -> new ResourceNotFoundException("User", "id", id)
+	        );
+
+	        userRepository.deleteById(id);
+	        return "user deleted successfully!!";
 	}
 	
 	
