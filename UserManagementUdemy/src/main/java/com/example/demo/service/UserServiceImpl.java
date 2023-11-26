@@ -12,6 +12,7 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.exception.EmailAlreadyExistsException;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.mapper.AutoUserMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.repository.UserRepository;
 
@@ -32,17 +33,19 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 	
 //	User user=UserMapper.mapToUser(userDto);
-		User user=modelMapper.map(userDto, User.class);
-		
+	//	User user=modelMapper.map(userDto, User.class);
+		User user=AutoUserMapper.MAPPER.mapToUser(userDto);
 		
 		Optional<User> optionalUser=userRepository.findByEmail(userDto.getEmail());
 		
 		if(optionalUser.isPresent()) {
 			throw new EmailAlreadyExistsException("Email already exists for user");
 		}
+		
 	User savedUser=userRepository.save(user);
 	
-	UserDto userDto2=modelMapper.map(savedUser, UserDto.class);
+	//UserDto userDto2=modelMapper.map(savedUser, UserDto.class);
+	UserDto userDto2=AutoUserMapper.MAPPER.mapToUserDto(savedUser);
 		return userDto2;
 	}
 
@@ -52,7 +55,8 @@ public class UserServiceImpl implements UserService {
 		
 		User user=userRepository.findById(id).orElseThrow(
 				()->new ResourceNotFoundException("user", "id", id));
-		UserDto userDto=UserMapper.mapToUserDto(user);
+	//	UserDto userDto=UserMapper.mapToUserDto(user);
+		UserDto userDto=AutoUserMapper.MAPPER.mapToUserDto(user);
 		return userDto;
 	}
 
@@ -62,7 +66,7 @@ public class UserServiceImpl implements UserService {
 		
 		List<User> users=userRepository.findAll();
 		
-		return users.stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
+		return users.stream().map((user)->AutoUserMapper.MAPPER.mapToUserDto(user)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -79,7 +83,8 @@ public class UserServiceImpl implements UserService {
 		existingUser.setEmail(user.getEmail());
 		User updatedUser=userRepository.save(existingUser);
 		
-		return UserMapper.mapToUserDto(updatedUser);
+		//return UserMapper.mapToUserDto(updatedUser);
+		return AutoUserMapper.MAPPER.mapToUserDto(updatedUser);
 	}
 
 	@Override
