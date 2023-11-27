@@ -17,5 +17,6 @@ private Long id;
 	private String email;
 	
 	private String departmentCode;
+	private String organizationCode;
 	
 }

@@ -1,5 +1,10 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,26 +16,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "Employees")
-public class Employee {
-	
+@AllArgsConstructor
+@Table(name = "organizations")
+public class Organization {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private String firstName;
-	private String lastName;
+	@Column(nullable = false)
+	private String organizationName;
+	private String organizationDescription;
 	
-	@Column(nullable = false,unique = true)
-	private String email;
-	
-	private String departmentCode;
-	
+
+	@Column(nullable = false)
 	private String organizationCode;
+	
+	@CreationTimestamp
+	private LocalDate createdDate;
 
 }

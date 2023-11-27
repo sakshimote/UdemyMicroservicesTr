@@ -11,7 +11,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.example.demo.dto.APIResponseDto;
 import com.example.demo.dto.DepartmentDto;
 import com.example.demo.dto.EmployeeDto;
+import com.example.demo.dto.OrganizationDto;
 import com.example.demo.entity.Employee;
+import com.example.demo.mapper.EmployeeMapper;
 import com.example.demo.repository.EmployeeRepository;
 
 
@@ -39,21 +41,11 @@ public class
 	@Override
 	public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
 		// TODO Auto-generated method stub
-		Employee employee=new Employee(
-				employeeDto.getId(),
-				employeeDto.getFirstName(),
-				employeeDto.getLastName(),
-				employeeDto.getEmail(),
-				employeeDto.getDepartmentCode());
+		Employee employee=EmployeeMapper.mapToEmployee(employeeDto);
 		
 		Employee savedEmployee=employeeRepository.save(employee);
 		
-		EmployeeDto savedEmployeeDto=new EmployeeDto(
-				savedEmployee.getId(),
-				savedEmployee.getFirstName(),
-				savedEmployee.getLastName(),
-				savedEmployee.getEmail(),
-				savedEmployee.getDepartmentCode());
+		EmployeeDto savedEmployeeDto=EmployeeMapper.mapToEmployeeDto(savedEmployee);
 
 
 		return savedEmployeeDto;
@@ -76,18 +68,18 @@ public class
 		.retrieve().bodyToMono(DepartmentDto.class).block();
 		
 		
-//	DepartmentDto departmentDto=apiClient.getDepartmentByCode(employee.getDepartmentCode());
-		EmployeeDto employeeDto=new EmployeeDto(
-				employee.getId(),
-				employee.getFirstName(),
-				employee.getLastName(),
-				employee.getEmail(),
-				employee.getDepartmentCode());
+		OrganizationDto OrganizationDto=	webClient.get()
+				.uri("http://localhost:8083/api/organizations/get/"+employee.getOrganizationCode())
+				.retrieve().bodyToMono(OrganizationDto.class).block();
+				
 		
+//	DepartmentDto departmentDto=apiClient.getDepartmentByCode(employee.getDepartmentCode());
+		EmployeeDto employeeDto=EmployeeMapper.mapToEmployeeDto(employee);
 
 		APIResponseDto apiResponseDto=new APIResponseDto();
 		apiResponseDto.setDepartmentDto(departmentDto);
 		apiResponseDto.setEmployeeDto(employeeDto);
+		apiResponseDto.setOrganizationDto(OrganizationDto);
 		
 		
 		return apiResponseDto;
@@ -105,13 +97,7 @@ departmentDto.setDepartmentCode("RD001");
 departmentDto.setDepartmentDescription("Research & development department");
 
 
-EmployeeDto employeeDto=new EmployeeDto(
-					employee.getId(),
-					employee.getFirstName(),
-					employee.getLastName(),
-					employee.getEmail(),
-					employee.getDepartmentCode());
-			
+EmployeeDto employeeDto=EmployeeMapper.mapToEmployeeDto(employee);
 
 			APIResponseDto apiResponseDto=new APIResponseDto();
 			apiResponseDto.setDepartmentDto(departmentDto);
