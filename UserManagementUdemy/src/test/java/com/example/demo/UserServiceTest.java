@@ -42,13 +42,12 @@ public class UserServiceTest {
 
     @BeforeEach
     public void setup(){
-        //employeeRepository = Mockito.mock(EmployeeRepository.class);
-        //employeeService = new EmployeeServiceImpl(employeeRepository);
+       
         user = User.builder()
                 .id(1L)
-                .firstName("Ramesh")
-                .lastName("Fadatare")
-                .email("ramesh@gmail.com")
+                .firstName("sakshi")
+                .lastName("mote")
+                .email("sakshi@gmail.com")
                 .build();
     }
 
@@ -77,8 +76,8 @@ public class UserServiceTest {
     
 
 
-    // JUnit test for getAllEmployees method
-    @DisplayName("JUnit test for getAllEmployees method (negative scenario)")
+ 
+    @DisplayName("JUnit test for getAllusers method (negative scenario)")
     @Test
     public void givenEmptyEmployeesList_whenGetAllEmployees_thenReturnEmptyEmployeesList(){
         // given - precondition or setup
@@ -101,8 +100,8 @@ public class UserServiceTest {
     }
 
 
-    // JUnit test for getAllEmployees method
-    @DisplayName("JUnit test for getAllEmployees method")
+  
+    @DisplayName("JUnit test for getAllusers method")
     @Test
     public void givenEmployeesList_whenGetAllEmployees_thenReturnEmployeesList(){
         // given - precondition or setup
@@ -124,7 +123,7 @@ public class UserServiceTest {
         assertThat(employeeList.size()).isEqualTo(2);
     }
 
-    // JUnit test for getEmployeeById method
+    
     @DisplayName("JUnit test for getEmployeeById method")
     @Test
     public void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject(){

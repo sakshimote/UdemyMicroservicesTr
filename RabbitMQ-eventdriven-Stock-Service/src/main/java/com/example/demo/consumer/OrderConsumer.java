@@ -14,7 +14,7 @@ public class OrderConsumer {
 
     @RabbitListener(queues = "${rabbitmq.queue.order.name}")
     public void consume(OrderEvent event){
-        LOGGER.info(String.format("Order event received in email service=> %s", event.toString()));
+        LOGGER.info(String.format("Order event received=> %s", event.toString()));
 
        
     }

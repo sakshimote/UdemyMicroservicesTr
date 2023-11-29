@@ -48,7 +48,7 @@ public class RabbitMQConfig {
         return new TopicExchange(exchange);
     }
 
-    // spring bean for binding between exchange and queue using routing key
+    
     @Bean
     public Binding binding(){
         return BindingBuilder
