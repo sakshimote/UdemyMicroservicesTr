@@ -13,7 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.DepartmentDto;
 import com.example.demo.service.DepartmentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+
+@Tag(
+		name = "department controller",
+		description ="controller" )
+
 
 @RestController
 @RequestMapping("departments/api")
@@ -22,6 +30,12 @@ public class DepartmentController {
 	
 	@Autowired 
 	private DepartmentService departmentService;
+	
+	
+	
+	
+	@Operation(summary = "save data",description = "save data")
+	@ApiResponse(responseCode = "201",description = "code for save data")
 	
 	@PostMapping("/post")
 	public ResponseEntity<DepartmentDto> saveDepartment(@RequestBody DepartmentDto departmentDto){

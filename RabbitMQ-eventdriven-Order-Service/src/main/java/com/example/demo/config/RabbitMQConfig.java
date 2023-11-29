@@ -31,19 +31,18 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.binding.email.routing.key}")
     private String emailRoutingKey;
 
-    // spring bean for queue - order queue
+   
     @Bean
     public Queue orderQueue(){
         return new Queue(orderQueue);
     }
 
-    // spring bean for queue - order queue
+  
     @Bean
     public Queue emailQueue(){
         return new Queue(emailQueue);
     }
 
-    // spring bean for exchange
     @Bean
     public TopicExchange exchange(){
         return new TopicExchange(exchange);
@@ -58,7 +57,7 @@ public class RabbitMQConfig {
                 .with(orderRoutingKey);
     }
 
-    // spring bean for binding between exchange and queue using routing key
+   
     @Bean
     public Binding emailBinding(){
         return BindingBuilder
@@ -67,13 +66,13 @@ public class RabbitMQConfig {
                 .with(emailRoutingKey);
     }
 
-    // message converter
+  
     @Bean
     public MessageConverter converter(){
         return new Jackson2JsonMessageConverter();
     }
 
-    // configure RabbitTemplate
+   
     @Bean
     public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderEvent {
-    private String status; // pending, progress, completed
+    private String status; 
     private String message;
     private Order order;
 }
